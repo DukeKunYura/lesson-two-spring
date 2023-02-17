@@ -1,11 +1,9 @@
 package com.example.lessontwospring.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
 
@@ -16,8 +14,10 @@ import java.util.UUID;
 public class User {
     @Id
     @Column(name = "user_id")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @GeneratedValue(generator = "uuid2")
     @EqualsAndHashCode.Include
-    private UUID id = UUID.randomUUID();
+    private UUID id;
     @Column(name = "passport_number")
     private String passportNumber;
     @Column(name = "first_name")
