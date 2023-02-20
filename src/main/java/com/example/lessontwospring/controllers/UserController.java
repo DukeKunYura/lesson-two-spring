@@ -1,6 +1,7 @@
 package com.example.lessontwospring.controllers;
 
 import com.example.lessontwospring.entity.User;
+import com.example.lessontwospring.projections.UserProjection;
 import com.example.lessontwospring.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,7 +50,7 @@ public class UserController {
     }
 
     @GetMapping(value = "age_less")
-    public List<User> getUserAgeLess(@RequestParam(name = "age") int age) {
+    public List<UserProjection> getProjectionAgeLess(@RequestParam(name = "age") int age) {
         return userRepository.findByAgeLessThan(age);
     }
 }
