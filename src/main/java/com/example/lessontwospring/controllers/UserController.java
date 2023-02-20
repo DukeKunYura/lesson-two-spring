@@ -21,7 +21,7 @@ public class UserController {
     }
 
     @GetMapping(value = "user_by_passport")
-    public List<User> getUserByPassportGr(@RequestParam(name = "passport") String passport) {
+    public List<User> getUserByPassport(@RequestParam(name = "passport") String passport) {
         return userRepository.findByPassportNumber(passport);
     }
 
@@ -37,12 +37,19 @@ public class UserController {
 
     @GetMapping(value = "add_user")
     public User addUser(@RequestParam(name = "passport", required = false) String passportNumber,
-                        @RequestParam(name = "name", required = false) String name) {
+                        @RequestParam(name = "name", required = false) String name,
+                        @RequestParam(name = "age", required = false) int age) {
         User user = new User();
         user.setFirstName(name);
         user.setPassportNumber(passportNumber);
+        user.setAge(age);
         userRepository.save(user);
 
         return user;
+    }
+
+    @GetMapping(value = "age_less")
+    public List<User> getUserAgeLess(@RequestParam(name = "age") int age) {
+        return userRepository.findByAgeLessThan(age);
     }
 }

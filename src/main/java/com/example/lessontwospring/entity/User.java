@@ -26,4 +26,6 @@ public class User {
     private String surname;
     @Column(name = "patronymic")
     private String patronymic;
+    @Column(name = "age")
+    private int age;
 }
