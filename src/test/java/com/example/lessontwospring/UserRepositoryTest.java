@@ -13,6 +13,7 @@ import org.springframework.test.annotation.Rollback;
 import java.util.List;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
@@ -21,27 +22,14 @@ public class UserRepositoryTest {
     private UserRepository userRepository;
     @Autowired
     private UserGroupRepository userGroupRepository;
-    private UUID userGroupId;
+    private UUID groupId;
 
-    @Test
-    @Rollback(value = false)
-    void contextLoads() {
-        assertNotNull(userRepository);
-//        User user = new User();
-//        user.setFirstName("Stan");
-//        user.setSurname("Brown");
-//        user.setAge(45);
-//        user.setPassportNumber("676767");
-//        userRepository.save(user);
-
-    }
-//    @Test
-//    @Rollback(value = false)
     @PostConstruct
     void addUserGroup() {
         UserGroup userGroup = new UserGroup();
         userGroup.setName("Professors");
-        userGroupRepository.save(userGroup);
+        userGroup = userGroupRepository.save(userGroup);
+        groupId = userGroup.getId();
 
         {
             User user = new User();
@@ -49,8 +37,7 @@ public class UserRepositoryTest {
             user.setSurname("Brown");
             user.setAge(45);
             user.setPassportNumber("676767");
-            userRepository.save(user);
-            userGroup.getUsers().add(user);
+            userGroup.addUser(user);
         }
         {
             User user = new User();
@@ -58,43 +45,24 @@ public class UserRepositoryTest {
             user.setSurname("Browne");
             user.setAge(40);
             user.setPassportNumber("670000");
-            userRepository.save(user);
-            userGroup.getUsers().add(user);
+            userGroup.addUser(user);
         }
         userGroupRepository.save(userGroup);
-        userGroupId = userGroup.getId();
     }
-
 
     @Test
     void showSelect() {
-        UserGroup userGroup = userGroupRepository.findById(userGroupId).orElseThrow();
+        UserGroup userGroup = userGroupRepository.findById(groupId).orElseThrow();
         List<User> userList = userGroup.getUsers();
         userList.size();
     }
 
-//    @Test
-//    @Rollback(value = false)
-//    void addUserGroupInOneSetting() {
-//        UserGroup userGroup = new UserGroup();
-//        userGroup.setName("Professors");
-//
-//        {
-//            User user = new User();
-//            user.setFirstName("Stan");
-//            user.setSurname("Brown");
-//            user.setAge(45);
-//            user.setPassportNumber("676767");
-//            userGroup.getUsers().add(user);
-//        }
-//        {
-//            User user = new User();
-//            user.setFirstName("Stanly");
-//            user.setSurname("Browne");
-//            user.setAge(40);
-//            user.setPassportNumber("670000");
-//            userGroup.getUsers().add(user);
-//        }
-//        userGroupRepository.save(userGroup);
-//    }
+    @Test
+    @Rollback(value = false)
+    void addUserGroupInOneSetting() {
+        UserGroup userGroup = userGroupRepository.findById(groupId).orElseThrow();
+        userGroup.getUsers().size();
+        System.out.println("userGroup.getUsers().size() = " + userGroup.getUsers().size());
+        assertEquals(2, userGroup.getUsers().size());
+    }
 }

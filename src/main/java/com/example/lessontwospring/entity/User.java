@@ -28,4 +28,7 @@ public class User {
     private String patronymic;
     @Column(name = "age")
     private int age;
+    @ManyToOne
+    @JoinColumn(name = "user_group_id")
+    private UserGroup userGroup;
 }
