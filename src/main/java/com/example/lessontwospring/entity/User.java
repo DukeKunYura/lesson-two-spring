@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -28,7 +29,10 @@ public class User {
     private String patronymic;
     @Column(name = "age")
     private int age;
-    @ManyToOne
-    @JoinColumn(name = "user_group_id")
-    private UserGroup userGroup;
+    @OneToMany
+    @JoinTable(name = "users_user_groups"
+            , joinColumns = {@JoinColumn(name = "user_id")}
+            , inverseJoinColumns = {@JoinColumn(name = "user_group_id")})
+    List<UserGroup> groups;
+
 }

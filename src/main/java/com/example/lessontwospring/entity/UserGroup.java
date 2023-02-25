@@ -22,18 +22,10 @@ public class UserGroup {
     UUID id;
     @Column(name = "name")
     String name;
-
-    @OneToMany(mappedBy = "userGroup", cascade = CascadeType.ALL)
+    @OneToMany
+    @JoinTable(name = "users_user_groups"
+            , joinColumns = {@JoinColumn(name = "user_group_id")}
+            , inverseJoinColumns = {@JoinColumn(name = "user_id")})
     List<User> users = new ArrayList<>();
 
-    public void addUser(User user) {
-        if(user.getId() == null || !users.contains(user)) {
-            user.setUserGroup(this);
-            users.add(user);
-        }
-    }
-
-    public List<User> getUsers() {
-        return Collections.unmodifiableList(users);
-    }
 }
