@@ -92,4 +92,11 @@ public class UserRepositoryTest {
         User boris = userRepository.findById(borisId).orElseThrow();
         assertEquals(3, boris.getGroups().size());
     }
+
+    @Test
+    void eggerLoad() {
+        UserGroup groupOne = userGroupRepository.findGroupById(groupOneId).orElseThrow();
+        assertNotNull(groupOne);
+        assertFalse(groupOne.getUsers().isEmpty());
+    }
 }
